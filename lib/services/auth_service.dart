@@ -47,4 +47,29 @@ class AuthService {
     }
     return null;
   }
+
+
+  Future<String?> deslogar() async {
+    try {
+      await _firebaseAuth.signOut().then((value) => null);
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    }
+
+    return null;
+  }
+
+
+  Future<String?> excluirConta({required String senha}) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: _firebaseAuth.currentUser!.email!,
+        password: senha
+      );
+      await _firebaseAuth.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    }
+    return null;
+  }
 }
